@@ -10,6 +10,7 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
+import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
@@ -20,8 +21,7 @@ public class SchedulerPluginImpl implements SchedulerPlugin {
 	
 	private Scheduler scheduler;
 
-	@Override
-	public void execute() {
+	public SchedulerPluginImpl() {
 		try {
 			scheduler = StdSchedulerFactory.getDefaultScheduler();
 			scheduler.start();
@@ -66,7 +66,7 @@ public class SchedulerPluginImpl implements SchedulerPlugin {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public SchedulerPlugin triggerTask(String name, String group) {
 		schedule(newTrigger().startNow().forJob(name, group).build());
@@ -94,5 +94,21 @@ public class SchedulerPluginImpl implements SchedulerPlugin {
 		        .build());
 		return this;
 	}
+
+	@Override
+	public SchedulerPlugin removeTask(Task task) {
+		return removeTask(task.getName(), task.getGroup());
+	}
+
+	@Override
+	public SchedulerPlugin removeTask(String name, String group) {
+		try {
+			scheduler.deleteJob(new JobKey(name, group));
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
+		return this;
+	}
+
 	
 }

@@ -1,11 +1,10 @@
 package io.core9.scheduler;
 
-import java.util.Date;
-
-import io.core9.core.executor.Executor;
 import io.core9.core.plugin.Core9Plugin;
 
-public interface SchedulerPlugin extends Core9Plugin, Executor {
+import java.util.Date;
+
+public interface SchedulerPlugin extends Core9Plugin {
 
 	/**
 	 * Register a task in the scheduler
@@ -13,6 +12,18 @@ public interface SchedulerPlugin extends Core9Plugin, Executor {
 	 * @return
 	 */
 	SchedulerPlugin registerTask(Task task);
+	
+	/**
+	 * Remove a task in the scheduler
+	 * @param task
+	 * @return
+	 */
+	SchedulerPlugin removeTask(Task task);
+	
+	/**
+	 * Remove a task in the scheduler
+	 */
+	SchedulerPlugin removeTask(String name, String group);
 	
 	/**
 	 * Trigger a task
